@@ -1,32 +1,39 @@
 import "reflect-metadata";
-import { createConnection } from "typeorm";
-import * as casual from "casual";
 import * as Koa from "koa";
 import { ApolloServer } from "apollo-server-koa";
+import { createConnection } from "typeorm";
+import { buildSchema } from "type-graphql";
 
-import { typeDefs } from "./typeDefs";
-// import { resolvers } from "./resolvers";
-
-const mocks = {
-  User: () => ({
-    id: () => casual.integer(0, 100000),
-    firstName: casual.first_name,
-    lastName: casual.last_name,
-    age: () => casual.integer(20, 60)
-  })
-};
+import { AuthResolver } from "./resolver/Auth";
+import { UserResolver } from "./resolver/User";
 
 const startServer = async () => {
-  const server = new ApolloServer({ typeDefs, mocks });
+  let schema;
 
-  await createConnection();
+  try {
+    await createConnection();
+  } catch (err) {
+    console.error(err);
+    process.exit();
+  }
+
+  try {
+    schema = await buildSchema({
+      resolvers: [UserResolver, AuthResolver]
+    });
+  } catch (err) {
+    console.error(err);
+    process.exit();
+  }
+
+  const server = new ApolloServer({ schema });
 
   const app = new Koa();
 
   server.applyMiddleware({ app });
 
   app.listen({ port: 4000 }, () =>
-    console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
+    console.log(`Server ready at http://localhost:4000${server.graphqlPath}`)
   );
 };
 
