@@ -9,9 +9,9 @@ export class User extends BaseEntity {
   id: number;
 
   @Field()
-  @Column("text", { unique: true })
+  @Column("varchar", { unique: true, length: 64 })
   userId: string;
 
-  @Column("text")
+  @Column("varchar", { length: 60 })
   password: string;
 }
