@@ -15,7 +15,7 @@ export class UserIdArgs {
 
 @Resolver()
 export class UserResolver {
-  @Query(() => [User])
+  @Query(returns => User)
   async getUserById(@Args() args: IdArgs) {
     const { id } = args;
     return await User.findOne(User, {
@@ -25,10 +25,11 @@ export class UserResolver {
     });
   }
 
-  @Query(() => [User])
+  @Query(returns => User)
   async getUserByUserId(@Args() args: UserIdArgs) {
     const { userId } = args;
-    return await User.findOne(User, {
+
+    return await User.findOne({
       where: {
         userId
       }
