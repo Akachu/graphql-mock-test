@@ -10,7 +10,7 @@ import {
 import { User } from "../entity/User";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
-import * as jwtConfig from "../../jwtConfig.json";
+import * as jwtConfig from "../../jwtconfig.json";
 
 @ObjectType()
 export class AuthData {
