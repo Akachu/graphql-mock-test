@@ -1,4 +1,11 @@
-import { Resolver, Query, Args, ArgsType, Field } from "type-graphql";
+import {
+  Resolver,
+  Query,
+  Args,
+  ArgsType,
+  Field,
+  Authorized
+} from "type-graphql";
 import { User } from "../entity/User";
 
 @ArgsType()
@@ -15,6 +22,7 @@ export class UserIdArgs {
 
 @Resolver()
 export class UserResolver {
+  @Authorized()
   @Query(returns => User)
   async getUserById(@Args() args: IdArgs) {
     const { id } = args;
@@ -25,6 +33,7 @@ export class UserResolver {
     });
   }
 
+  @Authorized()
   @Query(returns => User)
   async getUserByUserId(@Args() args: UserIdArgs) {
     const { userId } = args;

@@ -10,6 +10,7 @@ import {
 import { User } from "../entity/User";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
+import * as jwtConfig from "../../jwtConfig.json";
 
 @ObjectType()
 export class AuthData {
@@ -55,7 +56,7 @@ export class AuthResolver {
 
     await user.save();
 
-    const result: AuthData = { token: jwt.sign({ userId }, "such a secret") };
+    const result: AuthData = { token: jwt.sign({ userId }, jwtConfig.secret) };
 
     return result;
   }
@@ -73,7 +74,7 @@ export class AuthResolver {
 
     if (!match) throw new Error("password do not match");
 
-    const result: AuthData = { token: jwt.sign({ userId }, "such a secret") };
+    const result: AuthData = { token: jwt.sign({ userId }, jwtConfig.secret) };
 
     return result;
   }

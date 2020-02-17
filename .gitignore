@@ -4,6 +4,7 @@ node_modules/
 build/
 tmp/
 temp/
+jwtconfig.json
 ormconfig.json
 *.log
 dist/
